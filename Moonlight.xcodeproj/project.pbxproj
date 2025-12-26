@@ -13,7 +13,6 @@
 		4C38E82E1FF0C71D000425CD /* libmoonlight-common.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98AB2E841CAD46840089BB98 /* libmoonlight-common.a */; };
 		A42858422D5065B800E39078 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = A42858412D5065B800E39078 /* OpenSSL */; };
 		A42858472D5066A000E39078 /* FFmpeg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A42858432D5066A000E39078 /* FFmpeg.xcframework */; };
-		A42858482D5066A000E39078 /* Opus.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A42858442D5066A000E39078 /* Opus.xcframework */; };
 		A42858492D50682400E39078 /* SDL2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A42858452D5066A000E39078 /* SDL2.xcframework */; };
 		A428584A2D50682400E39078 /* SDL2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A42858452D5066A000E39078 /* SDL2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -54,8 +53,7 @@
 		4C7E0A7A1FECBFFD00684411 /* Moonlight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Moonlight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CD17E9B2733C0FC004D438C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "moonlight-common.xcodeproj"; path = "moonlight-common/moonlight-common.xcodeproj"; sourceTree = "<group>"; };
-		A42858432D5066A000E39078 /* FFmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FFmpeg.xcframework; path = xcframeworks/FFmpeg.xcframework; sourceTree = "<group>"; };
-		A42858442D5066A000E39078 /* Opus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Opus.xcframework; path = xcframeworks/Opus.xcframework; sourceTree = "<group>"; };
+		A42858432D5066A000E39078 /* FFmpeg.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:KHSNQKXT55:Martin Kenny"; lastKnownFileType = wrapper.xcframework; name = FFmpeg.xcframework; path = xcframeworks/FFmpeg.xcframework; sourceTree = "<group>"; };
 		A42858452D5066A000E39078 /* SDL2.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:KHSNQKXT55:Martin Kenny"; lastKnownFileType = wrapper.xcframework; name = SDL2.xcframework; path = xcframeworks/SDL2.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,7 +142,6 @@
 				Stream/VideoDecoderRenderer.m,
 				Utility/Logger.m,
 				Utility/Utils.m,
-				Version.xcconfig,
 			);
 			target = 4C7E0A791FECBFFD00684411 /* Moonlight for macOS */;
 		};
@@ -161,7 +158,6 @@
 			files = (
 				A42858492D50682400E39078 /* SDL2.xcframework in Frameworks */,
 				A42858472D5066A000E39078 /* FFmpeg.xcframework in Frameworks */,
-				A42858482D5066A000E39078 /* Opus.xcframework in Frameworks */,
 				A42858422D5065B800E39078 /* OpenSSL in Frameworks */,
 				4C38E82E1FF0C71D000425CD /* libmoonlight-common.a in Frameworks */,
 			);
@@ -202,7 +198,6 @@
 			isa = PBXGroup;
 			children = (
 				A42858432D5066A000E39078 /* FFmpeg.xcframework */,
-				A42858442D5066A000E39078 /* Opus.xcframework */,
 				A42858452D5066A000E39078 /* SDL2.xcframework */,
 			);
 			name = Frameworks;
