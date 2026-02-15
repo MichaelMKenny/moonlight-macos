@@ -186,7 +186,7 @@ static NSString* NV_SERVICE_TYPE = @"_nvstream._tcp";
             
             // Don't send a STUN request if we're connected to a VPN. We'll likely get the VPN
             // gateway's external address rather than the external address of the LAN.
-            if (![Utils isActiveNetworkVPN]) {
+            if (![Utils isActiveNetworkVPN] && ![NSUserDefaults.standardUserDefaults boolForKey:@"disableSTUNProbe"]) {
                 // Since we discovered this host over IPv4 mDNS, we know we're on the same network
                 // as the PC and we can use our current WAN address as a likely candidate
                 // for our PC's external address.

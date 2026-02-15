@@ -182,7 +182,7 @@
             else if ([DiscoveryManager isAddressLAN:inet_addr([hostAddress UTF8String])]) {
                 // Don't send a STUN request if we're connected to a VPN. We'll likely get the VPN
                 // gateway's external address rather than the external address of the LAN.
-                if (![Utils isActiveNetworkVPN]) {
+                if (![Utils isActiveNetworkVPN] && ![NSUserDefaults.standardUserDefaults boolForKey:@"disableSTUNProbe"]) {
                     // This host was discovered over a permissible LAN address, so we can update our
                     // external address for this host.
                     struct in_addr wanAddr;
