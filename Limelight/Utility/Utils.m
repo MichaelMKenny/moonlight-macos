@@ -50,6 +50,71 @@ NSString *const deviceName = @"roth";
     return hex;
 }
 
++ (BOOL) parseAddressPortString:(NSString*)addressPort address:(NSRange*)address port:(NSRange*)port {
+    if (addressPort == nil) {
+        return NO;
+    }
+
+    if ([addressPort hasPrefix:@"["]) {
+        // Bracketed IPv6: [addr] or [addr]:port
+        NSRange closingBracket = [addressPort rangeOfString:@"]"];
+        if (closingBracket.location == NSNotFound) {
+            return NO;
+        }
+        // Address is the content inside the brackets
+        *address = NSMakeRange(1, closingBracket.location - 1);
+        NSString* afterBracket = [addressPort substringFromIndex:NSMaxRange(closingBracket)];
+        if ([afterBracket hasPrefix:@":"]) {
+            *port = NSMakeRange(NSMaxRange(closingBracket) + 1,
+                                addressPort.length - NSMaxRange(closingBracket) - 1);
+        } else {
+            *port = NSMakeRange(NSNotFound, 0);
+        }
+    } else {
+        NSUInteger colonCount = [[addressPort componentsSeparatedByString:@":"] count] - 1;
+        if (colonCount > 1) {
+            // Bare IPv6 address — no port
+            *address = NSMakeRange(0, addressPort.length);
+            *port = NSMakeRange(NSNotFound, 0);
+        } else if (colonCount == 1) {
+            // hostname:port or IPv4:port
+            NSRange lastColon = [addressPort rangeOfString:@":" options:NSBackwardsSearch];
+            *address = NSMakeRange(0, lastColon.location);
+            *port = NSMakeRange(NSMaxRange(lastColon), addressPort.length - NSMaxRange(lastColon));
+        } else {
+            // Plain hostname or IPv4 — no port
+            *address = NSMakeRange(0, addressPort.length);
+            *port = NSMakeRange(NSNotFound, 0);
+        }
+    }
+    return YES;
+}
+
++ (NSString*) addressPortStringToAddress:(NSString*)addressPort {
+    NSRange addressRange, portRange;
+    if (![self parseAddressPortString:addressPort address:&addressRange port:&portRange]) {
+        return addressPort;
+    }
+    return [addressPort substringWithRange:addressRange];
+}
+
++ (unsigned short) addressPortStringToPort:(NSString*)addressPort {
+    NSRange addressRange, portRange;
+    if (![self parseAddressPortString:addressPort address:&addressRange port:&portRange] ||
+        portRange.location == NSNotFound) {
+        return 47989;
+    }
+    return (unsigned short)[[addressPort substringWithRange:portRange] integerValue];
+}
+
++ (NSString*) addressAndPortToAddressPortString:(NSString*)address port:(unsigned short)port {
+    // IPv6 addresses contain colons and must be bracketed in URI format
+    if ([address containsString:@":"]) {
+        return [NSString stringWithFormat:@"[%@]:%u", address, port];
+    }
+    return [NSString stringWithFormat:@"%@:%u", address, port];
+}
+
 + (BOOL)isActiveNetworkVPN {
     NSDictionary *dict = CFBridgingRelease(CFNetworkCopySystemProxySettings());
     NSArray *keys = [dict[@"__SCOPED__"] allKeys];

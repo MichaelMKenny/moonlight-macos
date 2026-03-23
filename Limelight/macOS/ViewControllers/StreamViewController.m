@@ -451,6 +451,7 @@
     StreamConfiguration *streamConfig = [[StreamConfiguration alloc] init];
     
     streamConfig.host = self.app.host.activeAddress;
+    streamConfig.httpsPort = self.app.host.httpsPort;
     streamConfig.appID = self.app.id;
     streamConfig.appName = self.app.name;
     streamConfig.serverCert = self.app.host.serverCert;

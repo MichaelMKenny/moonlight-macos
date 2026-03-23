@@ -342,7 +342,7 @@ const CGFloat scaleBase = 1.125;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *uniqueId = [IdManager getUniqueId];
 
-        HttpManager *hMan = [[HttpManager alloc] initWithHost:app.host.activeAddress uniqueId:uniqueId serverCert:app.host.serverCert];
+        HttpManager *hMan = [[HttpManager alloc] initWithHost:app.host.activeAddress httpsPort:app.host.httpsPort uniqueId:uniqueId serverCert:app.host.serverCert];
         HttpResponse *quitResponse = [[HttpResponse alloc] init];
         HttpRequest *quitRequest = [HttpRequest requestForResponse:quitResponse withUrlRequest:[hMan newQuitAppRequest]];
         

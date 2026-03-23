@@ -27,6 +27,7 @@
     char _hostString[256];
     char _appVersionString[32];
     char _gfeVersionString[32];
+    char _rtspSessionUrlString[512];
 }
 
 static NSLock* initLock;
@@ -367,8 +368,13 @@ void ClConnectionStatusUpdate(int status)
     hostAddress = config.host;
     [self updateVolume];
     
+    // The C library expects a plain hostname or IP address with no port.
+    // Strip any embedded port before passing down, using the same Utils
+    // parsing that HttpManager uses for consistency.
+    NSString* hostOnly = [Utils addressPortStringToAddress:config.host];
+    
     strncpy(_hostString,
-            [config.host cStringUsingEncoding:NSUTF8StringEncoding],
+            [hostOnly cStringUsingEncoding:NSUTF8StringEncoding],
             sizeof(_hostString));
     strncpy(_appVersionString,
             [config.appVersion cStringUsingEncoding:NSUTF8StringEncoding],
@@ -384,6 +390,13 @@ void ClConnectionStatusUpdate(int status)
     _serverInfo.serverInfoAppVersion = _appVersionString;
     if (config.gfeVersion != nil) {
         _serverInfo.serverInfoGfeVersion = _gfeVersionString;
+    }
+    if (config.rtspSessionUrl != nil) {
+        strncpy(_rtspSessionUrlString,
+                [config.rtspSessionUrl cStringUsingEncoding:NSUTF8StringEncoding],
+                sizeof(_rtspSessionUrlString) - 1);
+        _rtspSessionUrlString[sizeof(_rtspSessionUrlString) - 1] = '\0';
+        _serverInfo.rtspSessionUrl = _rtspSessionUrlString;
     }
 
     renderer = myRenderer;

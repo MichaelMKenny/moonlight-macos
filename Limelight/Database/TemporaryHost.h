@@ -19,6 +19,7 @@
 @property (nonatomic) BOOL showHiddenApps;
 
 @property (atomic, nullable, retain) NSData *serverCert;
+@property (atomic) unsigned short httpsPort;
 @property (atomic, nullable, retain) NSString *address;
 @property (atomic, nullable, retain) NSString *externalAddress;
 @property (atomic, nullable, retain) NSString *localAddress;

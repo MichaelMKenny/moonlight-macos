@@ -30,6 +30,19 @@ FOUNDATION_EXPORT NSString *const deviceName;
 #endif
 + (BOOL) isActiveNetworkVPN;
 
+// Parses an "address:port" string (IPv4 or bracketed IPv6) into separate NSRange values.
+// Returns NO if the string cannot be parsed.
++ (BOOL) parseAddressPortString:(NSString*)addressPort address:(NSRange*)address port:(NSRange*)port;
+
+// Returns just the address portion from an "address:port" or "[ipv6]:port" string.
++ (NSString*) addressPortStringToAddress:(NSString*)addressPort;
+
+// Returns the port from an "address:port" string, or 47989 (default) if no port is present.
++ (unsigned short) addressPortStringToPort:(NSString*)addressPort;
+
+// Combines a bare address and port into a formatted "address:port" or "[ipv6]:port" string.
++ (NSString*) addressAndPortToAddressPortString:(NSString*)address port:(unsigned short)port;
+
 @end
 
 @interface NSString (NSStringWithTrim)

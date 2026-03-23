@@ -373,7 +373,7 @@
     NSString *uniqueId = [IdManager getUniqueId];
     NSData *cert = [CryptoManager readCertFromFile];
 
-    HttpManager* hMan = [[HttpManager alloc] initWithHost:host.activeAddress uniqueId:uniqueId serverCert:host.serverCert];
+    HttpManager* hMan = [[HttpManager alloc] initWithHost:host.activeAddress httpsPort:host.httpsPort uniqueId:uniqueId serverCert:host.serverCert];
     PairManager* pMan = [[PairManager alloc] initWithManager:hMan clientCert:cert callback:self];
     [self.opQueue addOperation:pMan];
 }
