@@ -21,7 +21,7 @@ static const int MAX_ATTEMPTS = 5;
     int attempts = 0;
     while (![self isCancelled] && attempts++ < MAX_ATTEMPTS) {
         
-        HttpManager* hMan = [[HttpManager alloc] initWithHost:_host.activeAddress uniqueId:[IdManager getUniqueId] serverCert:_host.serverCert];
+        HttpManager* hMan = [[HttpManager alloc] initWithHost:_host.activeAddress httpsPort:_host.httpsPort uniqueId:[IdManager getUniqueId] serverCert:_host.serverCert];
         AppAssetResponse* appAssetResp = [[AppAssetResponse alloc] init];
         [hMan executeRequestSynchronously:[HttpRequest requestForResponse:appAssetResp withUrlRequest:[hMan newAppAssetRequestWithAppId:self.app.id]]];
 

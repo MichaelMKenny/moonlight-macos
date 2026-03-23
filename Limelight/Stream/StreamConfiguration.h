@@ -9,6 +9,8 @@
 @interface StreamConfiguration : NSObject
 
 @property NSString* host;
+@property unsigned short httpsPort;
+@property NSString* rtspSessionUrl;
 @property NSString* appVersion;
 @property NSString* gfeVersion;
 @property NSString* appID;

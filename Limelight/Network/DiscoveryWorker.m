@@ -128,8 +128,9 @@ static const float POLL_RATE = 2.0f; // Poll every 2 seconds
 - (ServerInfoResponse*) requestInfoAtAddress:(NSString*)address cert:(NSData*)cert {
     @autoreleasepool {
         HttpManager* hMan = [[HttpManager alloc] initWithHost:address
+                                                    httpsPort:_host.httpsPort
                                                      uniqueId:_uniqueId
-                                                         serverCert:cert];
+                                                   serverCert:cert];
         ServerInfoResponse* response = [[ServerInfoResponse alloc] init];
         [hMan executeRequestSynchronously:[HttpRequest requestForResponse:response
                                                            withUrlRequest:[hMan newServerInfoRequest:true]

@@ -25,6 +25,7 @@
     NSURLSession* _urlSession;
     NSString* _baseHTTPURL;
     NSString* _baseHTTPSURL;
+    NSString* _urlSafeHostName;
     NSString* _uniqueId;
     NSString* _deviceName;
     NSData* _serverCert;
@@ -50,6 +51,10 @@ static const NSString* HTTPS_PORT = @"47984";
 }
 
 - (id) initWithHost:(NSString*) host uniqueId:(NSString*) uniqueId serverCert:(NSData*) serverCert {
+    return [self initWithHost:host httpsPort:0 uniqueId:uniqueId serverCert:serverCert];
+}
+
+- (id) initWithHost:(NSString*) host httpsPort:(unsigned short)httpsPort uniqueId:(NSString*) uniqueId serverCert:(NSData*) serverCert {
     self = [super init];
     // Use the same UID for all Moonlight clients to allow them
     // quit games started on another Moonlight client.
@@ -58,17 +63,27 @@ static const NSString* HTTPS_PORT = @"47984";
     _serverCert = serverCert;
     _requestLock = dispatch_semaphore_create(0);
     _respData = [[NSMutableData alloc] init];
-    
-    // If this is an IPv6 literal, we must properly enclose it in brackets
-    NSString* urlSafeHost;
-    if ([host containsString:@":"]) {
-        urlSafeHost = [NSString stringWithFormat:@"[%@]", host];
+
+    // Extract the bare address (no port) for URL-safe formatting.
+    // Utils handles all formats: "host:port", "[ipv6]:port", bare IPv6, plain hostname.
+    NSString* address = [Utils addressPortStringToAddress:host];
+    unsigned short httpPort = [Utils addressPortStringToPort:host];
+
+    // IPv6 addresses must be bracketed in URLs
+    if ([address containsString:@":"]) {
+        _urlSafeHostName = [NSString stringWithFormat:@"[%@]", address];
     } else {
-        urlSafeHost = host;
+        _urlSafeHostName = address;
     }
-    
-    _baseHTTPURL = [NSString stringWithFormat:@"http://%@:%@", urlSafeHost, HTTP_PORT];
-    _baseHTTPSURL = [NSString stringWithFormat:@"https://%@:%@", urlSafeHost, HTTPS_PORT];
+
+    _baseHTTPURL = [NSString stringWithFormat:@"http://%@:%u", _urlSafeHostName, httpPort];
+
+    // Use the explicitly provided HTTPS port if available; otherwise derive from
+    // the HTTP port using the standard GameStream/Sunshine offset (HTTPS = HTTP - 5).
+    if (httpsPort == 0) {
+        httpsPort = httpPort - 5;
+    }
+    _baseHTTPSURL = [NSString stringWithFormat:@"https://%@:%u", _urlSafeHostName, httpsPort];
 
     return self;
 }

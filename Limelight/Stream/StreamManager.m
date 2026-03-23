@@ -40,8 +40,9 @@
     NSString* uniqueId = [IdManager getUniqueId];
     
     HttpManager* hMan = [[HttpManager alloc] initWithHost:_config.host
-                                                 uniqueId:uniqueId
-                                                     serverCert:_config.serverCert];
+                                               httpsPort:_config.httpsPort
+                                                uniqueId:uniqueId
+                                              serverCert:_config.serverCert];
     
     ServerInfoResponse* serverInfoResp = [[ServerInfoResponse alloc] init];
     [hMan executeRequestSynchronously:[HttpRequest requestForResponse:serverInfoResp withUrlRequest:[hMan newServerInfoRequest:false]
@@ -120,6 +121,9 @@
         return FALSE;
     }
     
+    // Pass the RTSP session URL to the connection so it uses the correct port
+    _config.rtspSessionUrl = [launchResp getStringTag:@"sessionUrl0"];
+    
     return TRUE;
 }
 
@@ -136,6 +140,9 @@
         Log(LOG_E, @"Failed to parse resume response");
         return FALSE;
     }
+    
+    // Pass the RTSP session URL to the connection so it uses the correct port
+    _config.rtspSessionUrl = [resumeResp getStringTag:@"sessionUrl0"];
     
     return TRUE;
 }

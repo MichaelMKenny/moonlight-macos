@@ -17,6 +17,7 @@
 #define TAG_PAIR_STATUS @"PairStatus"
 #define TAG_STATE @"state"
 #define TAG_CURRENT_GAME @"currentgame"
+#define TAG_HTTPS_PORT @"HttpsPort"
 
 @interface ServerInfoResponse : HttpResponse <Response>
 
